@@ -61,6 +61,8 @@ class SP_Creater(QtWidgets.QMainWindow):
                 if isinstance(pos, str) and pos != '':
                     while pos[-1] == ' ':
                         pos = pos[:-1]
+                        if len(pos) == 0:
+                            break
                 row_out.append(pos)
             data_out.append(row_out)
         return data_out
@@ -86,16 +88,17 @@ class SP_Creater(QtWidgets.QMainWindow):
                 # max_pos = max([mark_pos, name_pos, cnt_pos])
                 if len(row_to_scan) > name_pos:
                     Name = row_to_scan[name_pos]
-                    # просматриваем все оставшиеся строки
-                    for row in elements_list[scan_pos + 1:]:
-                        # находим максимальную длину строки
-                        if len(row) > name_pos:
-                            if row[name_pos] == Name:
-                                row_to_scan[mark_pos] += ',' + row[mark_pos]
-                                row_to_scan[cnt_pos] += row[cnt_pos]
-                                row.clear()
-                    if row_to_scan:
-                        Spec.append(row_to_scan)
+                    if Name != '':
+                        # просматриваем все оставшиеся строки
+                        for row in elements_list[scan_pos + 1:]:
+                            # находим максимальную длину строки
+                            if len(row) > name_pos:
+                                if row[name_pos] == Name:
+                                    row_to_scan[mark_pos] += ',' + row[mark_pos]
+                                    row_to_scan[cnt_pos] += row[cnt_pos]
+                                    row.clear()
+                        if row_to_scan:
+                            Spec.append(row_to_scan)
                 else:
                     if len(elements_list[scan_pos - 1]):
                         Spec.append(row_to_scan)
