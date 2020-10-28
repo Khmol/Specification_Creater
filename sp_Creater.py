@@ -92,10 +92,17 @@ class SP_Creater(QtWidgets.QMainWindow):
                         # просматриваем все оставшиеся строки
                         for row in elements_list[scan_pos + 1:]:
                             # находим максимальную длину строки
-                            if len(row) > name_pos:
+                            lenRow = len(row)
+                            if lenRow > name_pos:
                                 if row[name_pos] == Name:
                                     row_to_scan[mark_pos] += ',' + row[mark_pos]
-                                    row_to_scan[cnt_pos] += row[cnt_pos]
+                                    if lenRow > cnt_pos:
+                                        row_to_scan[cnt_pos] += row[cnt_pos]
+                                    else:
+                                        errorMessage = 'Ошибка в строке: {}'.format(str(row))
+                                        QtWidgets.QMessageBox.critical(self, 'Ошибка в перечне элементов',
+                                                                       errorMessage, QtWidgets.QMessageBox.Ok)
+                                        return
                                     row.clear()
                         if row_to_scan:
                             Spec.append(row_to_scan)
